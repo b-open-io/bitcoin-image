@@ -1,4 +1,4 @@
-import { ImageProtocols, type ParsedImageURL, Protocol } from "bitcoin-image";
+import { ImageProtocols, type ParsedImageURL } from "bitcoin-image";
 import React, { useState, useEffect } from "react";
 
 // Initialize the library
@@ -16,7 +16,7 @@ function useBlockchainImage(url: string | null | undefined) {
 
   useEffect(() => {
     if (!url) {
-      setDisplayUrl(imageProtocols.config.fallbackImage);
+      setDisplayUrl(imageProtocols.getFallbackImage());
       setLoading(false);
       return;
     }
@@ -33,7 +33,7 @@ function useBlockchainImage(url: string | null | undefined) {
         setDisplayUrl(display);
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to load image");
-        setDisplayUrl(imageProtocols.config.fallbackImage);
+        setDisplayUrl(imageProtocols.getFallbackImage());
       } finally {
         setLoading(false);
       }
@@ -67,7 +67,7 @@ function BlockchainImage({ url, alt, className, showInfo = false }: BlockchainIm
             alt={alt || "Blockchain image"}
             className={className}
             onError={(e) => {
-              e.currentTarget.src = imageProtocols.config.fallbackImage;
+              e.currentTarget.src = imageProtocols.getFallbackImage();
             }}
           />
           {showInfo && parsed && (

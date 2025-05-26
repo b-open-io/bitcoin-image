@@ -168,6 +168,13 @@ export class ImageProtocols {
     };
   }
 
+  /**
+   * Gets the fallback image URL
+   */
+  getFallbackImage(): string {
+    return this.config.fallbackImage;
+  }
+
   private getFromCache(url: string): string | null {
     const cached = this.cache.get(url);
     if (!cached) return null;
