@@ -1,0 +1,24 @@
+# Source files
+src/
+tests/
+examples/
+*.ts
+!dist/**/*.d.ts
+
+# Config files
+tsconfig.json
+tsup.config.ts
+biome.json
+.gitignore
+.npmignore
+benchmark.ts
+
+# Development files
+*.log
+*.tsbuildinfo
+node_modules/
+.DS_Store
+
+# Documentation
+CONTRIBUTING.md
+TODO.md
