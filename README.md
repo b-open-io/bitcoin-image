@@ -1,6 +1,39 @@
 # bitcoin-image
 
-A fast, zero-dependency TypeScript library for handling blockchain-based image protocols including Bitcoin Files (b://), Ordinals (ord://), BitFS (bitfs://), IPFS, and data URIs.
+**Transform any blockchain image reference into a working URL** 🖼️
+
+Ever tried to display an image stored on the Bitcoin blockchain? Whether it's an NFT, a meme, or any digital asset, blockchain images come in many different formats - and they're not directly displayable in browsers. This library solves that problem by converting any blockchain image reference into a working HTTP URL that you can use anywhere.
+
+## What is this for?
+
+Blockchain images are stored as transactions on networks like Bitcoin SV, but browsers can't display `b://txid` or `ord://txid_0` directly. You need a gateway service to serve the actual image data. This library:
+
+- **Normalizes** different blockchain image formats into standard URLs
+- **Works with any gateway** service like [OrdFS.network](https://ordfs.network), 1Sat Ordinals, or your own
+- **Handles fallbacks** gracefully when images fail to load
+- **Provides React hooks** for seamless frontend integration
+- **Caches results** for better performance
+
+## Visual Examples
+
+Here are some real blockchain images served through OrdFS.network:
+
+### 1SAT Ordinal Token
+![1SAT Token](https://ordfs.network/a54d3af24a03bcc28f6b3f2dd0ad249ee042b2f4b95810ae5184ab617a74b8b9_0)
+
+*Original reference: `ord://a54d3af24a03bcc28f6b3f2dd0ad249ee042b2f4b95810ae5184ab617a74b8b9_0`*
+
+### GEMS Token  
+![GEMS Token](https://ordfs.network/9418af73d138af02465b22dddd7913660dae9219cd260c4db83cda7c84713896_0)
+
+*Original reference: `ord://9418af73d138af02465b22dddd7913660dae9219cd260c4db83cda7c84713896_0`*
+
+### Bitcoin Files Image
+![Bitcoin Files](https://ordfs.network/cbacb16c3a03729165542f20404827f1ee91bc1f9783089c41c59524ebf75a22)
+
+*Original reference: `b://cbacb16c3a03729165542f20404827f1ee91bc1f9783089c41c59524ebf75a22`*
+
+These images are stored permanently on the Bitcoin blockchain and served through gateway services that make them accessible to web browsers.
 
 [![npm version](https://img.shields.io/npm/v/bitcoin-image.svg)](https://www.npmjs.com/package/bitcoin-image)
 [![Bundle Size](https://img.shields.io/bundlephobia/minzip/bitcoin-image)](https://bundlephobia.com/package/bitcoin-image)

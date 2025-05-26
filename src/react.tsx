@@ -1,5 +1,5 @@
-import type React from "react";
 import { useEffect, useRef, useState } from "react";
+import type { ImgHTMLAttributes } from "react";
 import { ImageProtocols } from "./index";
 import type { DisplayOptions, ParsedImageURL } from "./index";
 
@@ -199,8 +199,7 @@ export function useLazyBlockchainImage(
 }
 
 // Export types for React components
-export interface BlockchainImageProps
-  extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "onError"> {
+export interface BlockchainImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, "onError"> {
   src: string;
   fallback?: string;
   instance?: ImageProtocols;
