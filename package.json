@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-image",
-  "version": "0.1.1",
+  "version": "0.0.1",
   "description": "Library for handling blockchain-based image protocols (b://, ord://, bitfs://, etc.)",
   "type": "module",
   "main": "dist/index.cjs",

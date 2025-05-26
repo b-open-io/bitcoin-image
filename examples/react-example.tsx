@@ -223,7 +223,9 @@ export default function App() {
             onChange={(e) => setTestUrl(e.target.value)}
             placeholder="Enter b://, ord://, bitfs://, or other URL"
           />
-          <button onClick={handleTestUrl}>Test</button>
+          <button type="button" onClick={handleTestUrl}>
+            Test
+          </button>
         </div>
 
         {testResult && (

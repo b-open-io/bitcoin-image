@@ -187,6 +187,7 @@ export default function BlockchainGalleryPage() {
               className="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
             <button
+              type="button"
               onClick={handleAddUrl}
               className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
             >
@@ -200,9 +201,9 @@ export default function BlockchainGalleryPage() {
           <div className="bg-white shadow rounded-lg p-6 mb-8">
             <h2 className="text-2xl font-semibold mb-4">Your Images</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {urls.map((url, index) => (
+              {urls.map((url) => (
                 <div
-                  key={index}
+                  key={url}
                   className="relative aspect-square rounded-lg overflow-hidden bg-gray-100"
                 >
                   <BlockchainImage
@@ -212,7 +213,8 @@ export default function BlockchainGalleryPage() {
                     className="object-cover"
                   />
                   <button
-                    onClick={() => setUrls(urls.filter((_, i) => i !== index))}
+                    type="button"
+                    onClick={() => setUrls(urls.filter((u) => u !== url))}
                     className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
                   >
                     ✕

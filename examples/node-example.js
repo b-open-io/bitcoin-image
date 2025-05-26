@@ -112,7 +112,7 @@ async function main() {
 
   console.log(`First call (uncached): ${time1}ms`);
   console.log(`Second call (cached): ${time2}ms`);
-  console.log(`Cache stats:`, imageProtocols.getCacheStats());
+  console.log("Cache stats:", imageProtocols.getCacheStats());
 
   // Example 7: BSocial post processing
   console.log("\n=== Example 7: Processing BSocial Posts ===\n");
