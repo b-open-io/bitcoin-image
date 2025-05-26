@@ -1,37 +1,37 @@
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { ImageProtocols, ParsedImageURL } from 'bitcoin-image';
+import { ImageProtocols, ParsedImageURL } from "bitcoin-image";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 // Create a singleton instance
 const imageProtocols = new ImageProtocols({
   cacheEnabled: true,
-  defaultGateway: 'https://ordfs.network',
+  defaultGateway: "https://ordfs.network",
 });
 
 // Custom Next.js loader for blockchain images
 const blockchainImageLoader = ({ src, width, quality }: any) => {
   // If it's already a full URL, return as is
-  if (src.startsWith('http://') || src.startsWith('https://')) {
+  if (src.startsWith("http://") || src.startsWith("https://")) {
     return src;
   }
-  
+
   // Parse and convert blockchain URLs synchronously
   // Note: In production, you might want to handle this differently
   const parsed = imageProtocols.parse(src);
   if (!parsed.isValid) {
     return imageProtocols.config.fallbackImage;
   }
-  
+
   // Convert to display URL based on protocol
   switch (parsed.protocol) {
-    case 'b':
-    case 'ord':
-    case 'native':
+    case "b":
+    case "ord":
+    case "native":
       return `https://ordfs.network/${parsed.txid}_${parsed.vout || 0}`;
-    case 'bitfs':
+    case "bitfs":
       return `https://ordfs.network/${parsed.txid}_${parsed.vout || 0}`;
-    case 'data':
-    case 'http':
+    case "data":
+    case "http":
       return src;
     default:
       return imageProtocols.config.fallbackImage;
@@ -49,16 +49,16 @@ interface BlockchainImageProps {
   fill?: boolean;
 }
 
-export function BlockchainImage({ 
-  src, 
-  alt, 
-  width = 300, 
+export function BlockchainImage({
+  src,
+  alt,
+  width = 300,
   height = 300,
   className,
   priority = false,
-  fill = false
+  fill = false,
 }: BlockchainImageProps) {
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [imageUrl, setImageUrl] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ export function BlockchainImage({
         const url = await imageProtocols.getDisplayUrl(src);
         setImageUrl(url);
       } catch (error) {
-        console.error('Failed to load image:', error);
+        console.error("Failed to load image:", error);
         setImageUrl(imageProtocols.config.fallbackImage);
       } finally {
         setLoading(false);
@@ -78,8 +78,10 @@ export function BlockchainImage({
 
   if (loading) {
     return (
-      <div className={`${className} animate-pulse bg-gray-200`} 
-           style={{ width: fill ? '100%' : width, height: fill ? '100%' : height }}>
+      <div
+        className={`${className} animate-pulse bg-gray-200`}
+        style={{ width: fill ? "100%" : width, height: fill ? "100%" : height }}
+      >
         <div className="flex items-center justify-center h-full">
           <span className="text-gray-400">Loading...</span>
         </div>
@@ -117,52 +119,52 @@ export function BlockchainImage({
 // Example Next.js page component
 export default function BlockchainGalleryPage() {
   const [urls, setUrls] = useState<string[]>([]);
-  const [inputUrl, setInputUrl] = useState('');
+  const [inputUrl, setInputUrl] = useState("");
 
   // Example NFT collection
   const nftCollection = [
     {
       id: 1,
-      name: '1SAT Token Icon',
-      url: 'ord://b974de563db7ca7a42f421bb8a55c61680417404c661deb7a052773eb24344e3_0',
-      description: 'Official 1SAT token icon'
+      name: "1SAT Token Icon",
+      url: "ord://b974de563db7ca7a42f421bb8a55c61680417404c661deb7a052773eb24344e3_0",
+      description: "Official 1SAT token icon",
     },
     {
       id: 2,
-      name: 'GEMS Token',
-      url: 'ord://9418af73d138af02465b22dddd7913660dae9219cd260c4db83cda7c84713896_0',
-      description: 'GEMS token icon - 144M max supply'
+      name: "GEMS Token",
+      url: "ord://9418af73d138af02465b22dddd7913660dae9219cd260c4db83cda7c84713896_0",
+      description: "GEMS token icon - 144M max supply",
     },
     {
       id: 3,
-      name: 'GM POW-20',
-      url: 'ord://350ddacd88b98c0ac4590fbc88f1f92ac164cb91187759afcd73f889eea8bef7_0',
-      description: 'GM token from POW-20 protocol'
+      name: "GM POW-20",
+      url: "ord://350ddacd88b98c0ac4590fbc88f1f92ac164cb91187759afcd73f889eea8bef7_0",
+      description: "GM token from POW-20 protocol",
     },
     {
       id: 4,
-      name: 'Rare Sirloins #2149',
-      url: 'b://cbacb16c3a03729165542f20404827f1ee91bc1f9783089c41c59524ebf75a22',
-      description: 'Part of the Rare Sirloins collection'
+      name: "Rare Sirloins #2149",
+      url: "b://cbacb16c3a03729165542f20404827f1ee91bc1f9783089c41c59524ebf75a22",
+      description: "Part of the Rare Sirloins collection",
     },
     {
       id: 5,
-      name: 'Pixel Fox Collection',
-      url: '1611d956f397caa80b56bc148b4bce87b54f39b234aeca4668b4d5a7785eb9fa_0',
-      description: 'Pixel Fox NFT collection'
+      name: "Pixel Fox Collection",
+      url: "1611d956f397caa80b56bc148b4bce87b54f39b234aeca4668b4d5a7785eb9fa_0",
+      description: "Pixel Fox NFT collection",
     },
     {
       id: 6,
-      name: 'BSocial Image',
-      url: 'bitfs://868e663652556fa133878539b6c65093e36bef1a6497e511bdf0655b2ce1c935.out.0.3',
-      description: 'Image from a BSocial post'
-    }
+      name: "BSocial Image",
+      url: "bitfs://868e663652556fa133878539b6c65093e36bef1a6497e511bdf0655b2ce1c935.out.0.3",
+      description: "Image from a BSocial post",
+    },
   ];
 
   const handleAddUrl = () => {
     if (inputUrl && !urls.includes(inputUrl)) {
       setUrls([...urls, inputUrl]);
-      setInputUrl('');
+      setInputUrl("");
     }
   };
 
@@ -199,7 +201,10 @@ export default function BlockchainGalleryPage() {
             <h2 className="text-2xl font-semibold mb-4">Your Images</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {urls.map((url, index) => (
-                <div key={index} className="relative aspect-square rounded-lg overflow-hidden bg-gray-100">
+                <div
+                  key={index}
+                  className="relative aspect-square rounded-lg overflow-hidden bg-gray-100"
+                >
                   <BlockchainImage
                     src={url}
                     alt={`Custom image ${index + 1}`}
@@ -236,9 +241,7 @@ export default function BlockchainGalleryPage() {
                 <div className="p-4">
                   <h3 className="font-semibold text-lg">{nft.name}</h3>
                   <p className="text-gray-600 text-sm mt-1">{nft.description}</p>
-                  <div className="mt-2 text-xs text-gray-500 break-all">
-                    {nft.url}
-                  </div>
+                  <div className="mt-2 text-xs text-gray-500 break-all">{nft.url}</div>
                 </div>
               </div>
             ))}
@@ -252,14 +255,30 @@ export default function BlockchainGalleryPage() {
             <div>
               <h3 className="font-semibold text-lg mb-2">Input Formats</h3>
               <ul className="space-y-1 text-gray-600">
-                <li><code className="bg-gray-100 px-1">b://txid</code> - Bitcoin Files Protocol</li>
-                <li><code className="bg-gray-100 px-1">b://txid_vout</code> - With specific output</li>
-                <li><code className="bg-gray-100 px-1">ord://txid</code> - Ordinals Protocol</li>
-                <li><code className="bg-gray-100 px-1">ord://txid_vout</code> - Ordinals with output</li>
-                <li><code className="bg-gray-100 px-1">bitfs://txid.out.vout</code> - BitFS Protocol</li>
-                <li><code className="bg-gray-100 px-1">ipfs://hash</code> - IPFS Protocol</li>
-                <li><code className="bg-gray-100 px-1">data:image/...</code> - Data URIs</li>
-                <li><code className="bg-gray-100 px-1">txid_vout</code> - Native format</li>
+                <li>
+                  <code className="bg-gray-100 px-1">b://txid</code> - Bitcoin Files Protocol
+                </li>
+                <li>
+                  <code className="bg-gray-100 px-1">b://txid_vout</code> - With specific output
+                </li>
+                <li>
+                  <code className="bg-gray-100 px-1">ord://txid</code> - Ordinals Protocol
+                </li>
+                <li>
+                  <code className="bg-gray-100 px-1">ord://txid_vout</code> - Ordinals with output
+                </li>
+                <li>
+                  <code className="bg-gray-100 px-1">bitfs://txid.out.vout</code> - BitFS Protocol
+                </li>
+                <li>
+                  <code className="bg-gray-100 px-1">ipfs://hash</code> - IPFS Protocol
+                </li>
+                <li>
+                  <code className="bg-gray-100 px-1">data:image/...</code> - Data URIs
+                </li>
+                <li>
+                  <code className="bg-gray-100 px-1">txid_vout</code> - Native format
+                </li>
               </ul>
             </div>
             <div>
@@ -289,10 +308,10 @@ export async function resolveImageUrl(url: string) {
     const displayUrl = await imageProtocols.getDisplayUrl(url);
     return { success: true, url: displayUrl };
   } catch (error) {
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error',
-      url: imageProtocols.config.fallbackImage 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+      url: imageProtocols.config.fallbackImage,
     };
   }
 }

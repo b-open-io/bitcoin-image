@@ -8,10 +8,25 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "a11y": {
+        "noRedundantAlt": "off"
+      },
+      "style": {
+        "useNodejsImportProtocol": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      }
     }
   },
   "organizeImports": {
     "enabled": true
+  },
+  "files": {
+    "ignore": ["dist/**"]
   }
 }

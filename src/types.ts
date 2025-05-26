@@ -2,14 +2,14 @@
  * Supported blockchain image protocols
  */
 export enum Protocol {
-  Bitcoin = 'b',        // b://txid or b://txid_vout
-  Ordinals = 'ord',     // ord://txid or ord://txid_vout
-  BitFS = 'bitfs',      // bitfs://txid.out.vout
-  IPFS = 'ipfs',        // ipfs://hash
-  DataURI = 'data',     // data:image/png;base64,...
-  HTTP = 'http',        // http:// or https://
-  Native = 'native',    // Native txid or txid_vout (with optional / prefix)
-  Unknown = 'unknown'
+  Bitcoin = "b", // b://txid or b://txid_vout
+  Ordinals = "ord", // ord://txid or ord://txid_vout
+  BitFS = "bitfs", // bitfs://txid.out.vout
+  IPFS = "ipfs", // ipfs://hash
+  DataURI = "data", // data:image/png;base64,...
+  HTTP = "http", // http:// or https://
+  Native = "native", // Native txid or txid_vout (with optional / prefix)
+  Unknown = "unknown",
 }
 
 /**

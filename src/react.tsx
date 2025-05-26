@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { ImageProtocols } from './index';
-import type { ParsedImageURL, DisplayOptions } from './index';
+import React from "react";
+import { useEffect, useRef, useState } from "react";
+import { ImageProtocols } from "./index";
+import type { DisplayOptions, ParsedImageURL } from "./index";
 
 // Create a singleton instance for React apps
 let sharedInstance: ImageProtocols | null = null;
@@ -20,7 +21,7 @@ function getSharedInstance(): ImageProtocols {
  */
 export function useBlockchainImage(
   url: string | null | undefined,
-  options?: DisplayOptions & { instance?: ImageProtocols }
+  options?: DisplayOptions & { instance?: ImageProtocols },
 ) {
   const [state, setState] = useState<{
     displayUrl: string;
@@ -28,7 +29,7 @@ export function useBlockchainImage(
     error: Error | null;
     parsed: ParsedImageURL | null;
   }>({
-    displayUrl: '',
+    displayUrl: "",
     loading: true,
     error: null,
     parsed: null,
@@ -42,7 +43,7 @@ export function useBlockchainImage(
     async function loadImage() {
       if (!url) {
         setState({
-          displayUrl: options?.fallback || '',
+          displayUrl: options?.fallback || "",
           loading: false,
           error: null,
           parsed: null,
@@ -51,11 +52,11 @@ export function useBlockchainImage(
       }
 
       try {
-        setState(prev => ({ ...prev, loading: true, error: null }));
-        
+        setState((prev) => ({ ...prev, loading: true, error: null }));
+
         const parsed = imageProtocols.parse(url);
         const displayUrl = await imageProtocols.getDisplayUrl(url, options);
-        
+
         if (!cancelled) {
           setState({
             displayUrl,
@@ -67,9 +68,9 @@ export function useBlockchainImage(
       } catch (error) {
         if (!cancelled) {
           setState({
-            displayUrl: options?.fallback || '',
+            displayUrl: options?.fallback || "",
             loading: false,
-            error: error instanceof Error ? error : new Error('Failed to load image'),
+            error: error instanceof Error ? error : new Error("Failed to load image"),
             parsed: null,
           });
         }
@@ -91,7 +92,7 @@ export function useBlockchainImage(
  */
 export function useBlockchainImages(
   urls: string[],
-  options?: DisplayOptions & { instance?: ImageProtocols }
+  options?: DisplayOptions & { instance?: ImageProtocols },
 ) {
   const [state, setState] = useState<{
     images: Map<string, string>;
@@ -110,10 +111,10 @@ export function useBlockchainImages(
 
     async function loadImages() {
       try {
-        setState(prev => ({ ...prev, loading: true, error: null }));
-        
+        setState((prev) => ({ ...prev, loading: true, error: null }));
+
         const images = await imageProtocols.getDisplayUrls(urls, options);
-        
+
         if (!cancelled) {
           setState({
             images,
@@ -126,7 +127,7 @@ export function useBlockchainImages(
           setState({
             images: new Map(),
             loading: false,
-            error: error instanceof Error ? error : new Error('Failed to load images'),
+            error: error instanceof Error ? error : new Error("Failed to load images"),
           });
         }
       }
@@ -159,11 +160,11 @@ export function useLazyBlockchainImage(
     instance?: ImageProtocols;
     rootMargin?: string;
     threshold?: number | number[];
-  }
+  },
 ) {
   const [isInView, setIsInView] = useState(false);
   const ref = useRef<HTMLImageElement | null>(null);
-  
+
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
@@ -176,9 +177,9 @@ export function useLazyBlockchainImage(
         }
       },
       {
-        rootMargin: options?.rootMargin || '50px',
+        rootMargin: options?.rootMargin || "50px",
         threshold: options?.threshold || 0,
-      }
+      },
     );
 
     observer.observe(element);
@@ -198,7 +199,8 @@ export function useLazyBlockchainImage(
 }
 
 // Export types for React components
-export interface BlockchainImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'onError'> {
+export interface BlockchainImageProps
+  extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "onError"> {
   src: string;
   fallback?: string;
   instance?: ImageProtocols;
@@ -223,7 +225,7 @@ export function BlockchainImage({
 }: BlockchainImageProps) {
   const lazyResult = useLazyBlockchainImage(lazy ? src : null, { fallback, instance });
   const normalResult = useBlockchainImage(lazy ? null : src, { fallback, instance });
-  
+
   const displayUrl = lazy ? lazyResult.displayUrl : normalResult.displayUrl;
   const loading = lazy ? lazyResult.loading : normalResult.loading;
   const error = lazy ? lazyResult.error : normalResult.error;
@@ -244,7 +246,7 @@ export function BlockchainImage({
       {...imgProps}
       ref={ref}
       src={loading && placeholder ? placeholder : displayUrl}
-      alt={imgProps.alt || 'Blockchain image'}
+      alt={imgProps.alt || "Blockchain image"}
       onError={(e) => {
         if (fallback && e.currentTarget.src !== fallback) {
           e.currentTarget.src = fallback;

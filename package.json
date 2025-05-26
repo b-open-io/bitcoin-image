@@ -18,17 +18,15 @@
       "import": "./dist/react.js"
     }
   },
-  "files": [
-    "dist",
-    "src",
-    "README.md"
-  ],
+  "files": ["dist", "src", "README.md"],
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "bun build src/index.ts --outdir dist --target node --format esm --minify --sourcemap --outfile index.js && bun build src/index.ts --outdir dist --target node --format cjs --minify --sourcemap --outfile index.cjs && bun build src/react.tsx --outdir dist --target node --format esm --minify --sourcemap --outfile react.js --external react && bun build src/react.tsx --outdir dist --target node --format cjs --minify --sourcemap --outfile react.cjs --external react && tsc --emitDeclarationOnly --outDir dist",
+    "dev": "bun build src/index.ts --outdir dist --target node --format esm --outfile index.js --watch",
     "test": "bun test",
     "test:real": "bun test tests/real-examples.test.ts",
-    "lint": "tsc --noEmit",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "type-check": "tsc --noEmit",
     "example:node": "node examples/node-example.js",
     "example:bun": "bun examples/node-example.js",
     "example:cli": "node examples/cli.js",
@@ -57,9 +55,9 @@
   },
   "homepage": "https://github.com/b-open-io/bitcoin-image#readme",
   "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest",
     "@types/react": "^19.1.5",
-    "tsup": "^8.5.0",
     "typescript": "^5.8.3"
   },
   "dependencies": {},

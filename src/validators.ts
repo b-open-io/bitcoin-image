@@ -1,4 +1,4 @@
-import { REGEX } from './constants';
+import { REGEX } from "./constants";
 
 /**
  * Validates a Bitcoin transaction ID
@@ -11,10 +11,10 @@ export function isValidTxid(txid: string): boolean {
  * Validates a transaction output index
  */
 export function isValidVout(vout: string | number): boolean {
-  if (typeof vout === 'number') {
+  if (typeof vout === "number") {
     return vout >= 0 && Number.isInteger(vout);
   }
-  return REGEX.vout.test(vout) && parseInt(vout, 10) >= 0;
+  return REGEX.vout.test(vout) && Number.parseInt(vout, 10) >= 0;
 }
 
 /**
@@ -44,7 +44,7 @@ export function isProtocolUrl(url: string): boolean {
 export function isValidIPFSHash(hash: string): boolean {
   // Basic check for IPFS v0 (base58) or v1 (base32) CIDs
   return (
-    (hash.startsWith('Qm') && hash.length === 46) || // v0
-    (hash.startsWith('baf') && hash.length >= 59) // v1
+    (hash.startsWith("Qm") && hash.length === 46) || // v0
+    (hash.startsWith("baf") && hash.length >= 59) // v1
   );
 }

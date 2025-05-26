@@ -1,6 +1,6 @@
-import { Protocol, ParsedImageURL, ParseOptions } from './types';
-import { REGEX, PROTOCOL_PREFIXES } from './constants';
-import { isValidTxid, isValidVout, isValidDataUri, isValidIPFSHash } from './validators';
+import { PROTOCOL_PREFIXES, REGEX } from "./constants";
+import { type ParseOptions, type ParsedImageURL, Protocol } from "./types";
+import { isValidDataUri, isValidIPFSHash, isValidTxid, isValidVout } from "./validators";
 
 /**
  * Parses a blockchain image URL into its components
@@ -9,24 +9,24 @@ export function parseImageURL(url: string, options: ParseOptions = {}): ParsedIm
   const { strict = false, allowNativeTxid = true } = options;
 
   // Handle empty or invalid input
-  if (!url || typeof url !== 'string') {
+  if (!url || typeof url !== "string") {
     return {
       protocol: Protocol.Unknown,
-      original: url || '',
+      original: url || "",
       isValid: false,
-      error: 'Invalid input',
+      error: "Invalid input",
     };
   }
 
   const trimmedUrl = url.trim();
 
   // Check for data URI
-  if (trimmedUrl.startsWith('data:')) {
+  if (trimmedUrl.startsWith("data:")) {
     return parseDataUri(trimmedUrl);
   }
 
   // Check for HTTP(S) URLs
-  if (trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')) {
+  if (trimmedUrl.startsWith("http://") || trimmedUrl.startsWith("https://")) {
     return {
       protocol: Protocol.HTTP,
       original: trimmedUrl,
@@ -38,15 +38,15 @@ export function parseImageURL(url: string, options: ParseOptions = {}): ParsedIm
   const protocolMatch = trimmedUrl.match(REGEX.protocolUrl);
   if (protocolMatch) {
     const [, protocolName, content] = protocolMatch;
-    
+
     switch (protocolName.toLowerCase()) {
-      case 'b':
+      case "b":
         return parseBitcoinUrl(trimmedUrl, content);
-      case 'ord':
+      case "ord":
         return parseOrdinalsUrl(trimmedUrl, content);
-      case 'bitfs':
+      case "bitfs":
         return parseBitFSUrl(trimmedUrl, content);
-      case 'ipfs':
+      case "ipfs":
         return parseIPFSUrl(trimmedUrl, content);
       default:
         return {
@@ -67,7 +67,7 @@ export function parseImageURL(url: string, options: ParseOptions = {}): ParsedIm
     protocol: Protocol.Unknown,
     original: trimmedUrl,
     isValid: false,
-    error: 'Unrecognized format',
+    error: "Unrecognized format",
   };
 }
 
@@ -81,7 +81,7 @@ function parseDataUri(uri: string): ParsedImageURL {
       protocol: Protocol.DataURI,
       original: uri,
       isValid: false,
-      error: 'Invalid data URI format',
+      error: "Invalid data URI format",
     };
   }
 
@@ -100,7 +100,7 @@ function parseDataUri(uri: string): ParsedImageURL {
  */
 function parseBitcoinUrl(original: string, content: string): ParsedImageURL {
   // Handle b://txid or b://txid_vout
-  const parts = content.split('_');
+  const parts = content.split("_");
   const txid = parts[0];
   const vout = parts[1];
 
@@ -109,7 +109,7 @@ function parseBitcoinUrl(original: string, content: string): ParsedImageURL {
       protocol: Protocol.Bitcoin,
       original,
       isValid: false,
-      error: 'Invalid transaction ID',
+      error: "Invalid transaction ID",
     };
   }
 
@@ -125,10 +125,10 @@ function parseBitcoinUrl(original: string, content: string): ParsedImageURL {
       return {
         ...result,
         isValid: false,
-        error: 'Invalid output index',
+        error: "Invalid output index",
       };
     }
-    result.vout = parseInt(vout, 10);
+    result.vout = Number.parseInt(vout, 10);
   }
 
   return result;
@@ -142,10 +142,10 @@ function parseOrdinalsUrl(original: string, content: string): ParsedImageURL {
   let txid: string;
   let vout: string | undefined;
 
-  if (content.includes('_')) {
-    [txid, vout] = content.split('_');
-  } else if (content.includes('.')) {
-    [txid, vout] = content.split('.');
+  if (content.includes("_")) {
+    [txid, vout] = content.split("_");
+  } else if (content.includes(".")) {
+    [txid, vout] = content.split(".");
   } else {
     txid = content;
   }
@@ -155,7 +155,7 @@ function parseOrdinalsUrl(original: string, content: string): ParsedImageURL {
       protocol: Protocol.Ordinals,
       original,
       isValid: false,
-      error: 'Invalid transaction ID',
+      error: "Invalid transaction ID",
     };
   }
 
@@ -171,10 +171,10 @@ function parseOrdinalsUrl(original: string, content: string): ParsedImageURL {
       return {
         ...result,
         isValid: false,
-        error: 'Invalid output index',
+        error: "Invalid output index",
       };
     }
-    result.vout = parseInt(vout, 10);
+    result.vout = Number.parseInt(vout, 10);
   }
 
   return result;
@@ -185,7 +185,7 @@ function parseOrdinalsUrl(original: string, content: string): ParsedImageURL {
  */
 function parseBitFSUrl(original: string, content: string): ParsedImageURL {
   // Handle bitfs://txid.out.vout or bitfs://txid
-  const parts = content.split('.');
+  const parts = content.split(".");
   const txid = parts[0];
 
   if (!isValidTxid(txid)) {
@@ -193,7 +193,7 @@ function parseBitFSUrl(original: string, content: string): ParsedImageURL {
       protocol: Protocol.BitFS,
       original,
       isValid: false,
-      error: 'Invalid transaction ID',
+      error: "Invalid transaction ID",
     };
   }
 
@@ -205,16 +205,16 @@ function parseBitFSUrl(original: string, content: string): ParsedImageURL {
   };
 
   // Check for .out.vout pattern (with optional chunk identifier)
-  if (parts.length >= 3 && parts[1] === 'out') {
+  if (parts.length >= 3 && parts[1] === "out") {
     const vout = parts[2];
     if (!isValidVout(vout)) {
       return {
         ...result,
         isValid: false,
-        error: 'Invalid output index',
+        error: "Invalid output index",
       };
     }
-    result.vout = parseInt(vout, 10);
+    result.vout = Number.parseInt(vout, 10);
   }
 
   return result;
@@ -229,7 +229,7 @@ function parseIPFSUrl(original: string, content: string): ParsedImageURL {
       protocol: Protocol.IPFS,
       original,
       isValid: false,
-      error: 'Invalid IPFS hash',
+      error: "Invalid IPFS hash",
     };
   }
 
@@ -251,37 +251,37 @@ function parseIPFSUrl(original: string, content: string): ParsedImageURL {
  */
 function parseNativeFormat(input: string): ParsedImageURL {
   // Remove leading slash if present
-  let cleaned = input.startsWith('/') ? input.slice(1) : input;
-  
+  let cleaned = input.startsWith("/") ? input.slice(1) : input;
+
   // Check for content/ prefix and remove it
-  const hasContentPrefix = cleaned.startsWith('content/');
+  const hasContentPrefix = cleaned.startsWith("content/");
   if (hasContentPrefix) {
     cleaned = cleaned.slice(8); // Remove 'content/'
   }
 
   // Check for txid_vout format
-  if (cleaned.includes('_')) {
-    const [txid, vout] = cleaned.split('_');
+  if (cleaned.includes("_")) {
+    const [txid, vout] = cleaned.split("_");
     if (isValidTxid(txid) && isValidVout(vout)) {
       return {
         protocol: Protocol.Native,
         original: input,
         txid,
-        vout: parseInt(vout, 10),
+        vout: Number.parseInt(vout, 10),
         isValid: true,
       };
     }
   }
 
   // Check for txid.vout format (dot notation)
-  if (cleaned.includes('.')) {
-    const [txid, vout] = cleaned.split('.');
+  if (cleaned.includes(".")) {
+    const [txid, vout] = cleaned.split(".");
     if (isValidTxid(txid) && isValidVout(vout)) {
       return {
         protocol: Protocol.Native,
         original: input,
         txid,
-        vout: parseInt(vout, 10),
+        vout: Number.parseInt(vout, 10),
         isValid: true,
       };
     }
@@ -296,7 +296,7 @@ function parseNativeFormat(input: string): ParsedImageURL {
         protocol: Protocol.Native,
         original: input,
         txid,
-        vout: parseInt(vout, 10),
+        vout: Number.parseInt(vout, 10),
         isValid: true,
       };
     }
@@ -316,6 +316,6 @@ function parseNativeFormat(input: string): ParsedImageURL {
     protocol: Protocol.Unknown,
     original: input,
     isValid: false,
-    error: 'Invalid format',
+    error: "Invalid format",
   };
 }

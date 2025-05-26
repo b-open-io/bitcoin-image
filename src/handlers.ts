@@ -1,15 +1,15 @@
-import { ParsedImageURL, ProtocolHandler } from './types';
-import { Protocol } from './types';
-import { DEFAULT_GATEWAYS, DEFAULTS } from './constants';
+import { DEFAULTS, DEFAULT_GATEWAYS } from "./constants";
+import type { ParsedImageURL, ProtocolHandler } from "./types";
+import { Protocol } from "./types";
 
 /**
  * Default handler for Bitcoin Files Protocol (b://)
  */
 export const bitcoinHandler: ProtocolHandler = (parsed: ParsedImageURL): string => {
   if (!parsed.txid) {
-    throw new Error('Missing transaction ID');
+    throw new Error("Missing transaction ID");
   }
-  
+
   const vout = parsed.vout ?? 0;
   return `${DEFAULT_GATEWAYS.ordfs}/${parsed.txid}_${vout}`;
 };
@@ -19,13 +19,13 @@ export const bitcoinHandler: ProtocolHandler = (parsed: ParsedImageURL): string 
  */
 export const ordinalsHandler: ProtocolHandler = (parsed: ParsedImageURL): string => {
   if (!parsed.txid) {
-    throw new Error('Missing transaction ID');
+    throw new Error("Missing transaction ID");
   }
-  
+
   if (parsed.vout !== undefined) {
     return `${DEFAULT_GATEWAYS.ordfs}/${parsed.txid}_${parsed.vout}`;
   }
-  
+
   return `${DEFAULT_GATEWAYS.ordfs}/${parsed.txid}`;
 };
 
@@ -34,13 +34,13 @@ export const ordinalsHandler: ProtocolHandler = (parsed: ParsedImageURL): string
  */
 export const bitfsHandler: ProtocolHandler = (parsed: ParsedImageURL): string => {
   if (!parsed.txid) {
-    throw new Error('Missing transaction ID');
+    throw new Error("Missing transaction ID");
   }
-  
+
   if (parsed.vout !== undefined) {
     return `${DEFAULT_GATEWAYS.ordfs}/${parsed.txid}_${parsed.vout}`;
   }
-  
+
   return `${DEFAULT_GATEWAYS.bitfs}/${parsed.txid}`;
 };
 
@@ -49,9 +49,9 @@ export const bitfsHandler: ProtocolHandler = (parsed: ParsedImageURL): string =>
  */
 export const ipfsHandler: ProtocolHandler = (parsed: ParsedImageURL): string => {
   if (!parsed.hash) {
-    throw new Error('Missing IPFS hash');
+    throw new Error("Missing IPFS hash");
   }
-  
+
   return `${DEFAULT_GATEWAYS.ipfs}/${parsed.hash}`;
 };
 
@@ -76,9 +76,9 @@ export const httpHandler: ProtocolHandler = (parsed: ParsedImageURL): string => 
  */
 export const nativeHandler: ProtocolHandler = (parsed: ParsedImageURL): string => {
   if (!parsed.txid) {
-    throw new Error('Missing transaction ID');
+    throw new Error("Missing transaction ID");
   }
-  
+
   const vout = parsed.vout ?? 0;
   return `${DEFAULT_GATEWAYS.ordfs}/${parsed.txid}_${vout}`;
 };
@@ -96,7 +96,7 @@ export function createDefaultHandlers(): Record<Protocol, ProtocolHandler> {
     [Protocol.HTTP]: httpHandler,
     [Protocol.Native]: nativeHandler,
     [Protocol.Unknown]: () => {
-      throw new Error('Unknown protocol');
+      throw new Error("Unknown protocol");
     },
   };
 }

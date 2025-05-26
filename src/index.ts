@@ -1,20 +1,20 @@
+import { DEFAULTS } from "./constants";
+import { createDefaultHandlers } from "./handlers";
+import { parseImageURL } from "./parsers";
 import {
-  ImageProtocolConfig,
-  ParsedImageURL,
-  ParseOptions,
-  DisplayOptions,
-  Protocol,
+  type DisplayOptions,
+  type ImageProtocolConfig,
+  type ParseOptions,
+  type ParsedImageURL,
+  type Protocol,
   ProtocolHandlers,
-} from './types';
-import { parseImageURL } from './parsers';
-import { createDefaultHandlers } from './handlers';
-import { DEFAULTS } from './constants';
-import * as validators from './validators';
+} from "./types";
+import * as validators from "./validators";
 
-export * from './types';
-export * from './constants';
+export * from "./types";
+export * from "./constants";
 export { validators };
-export * as utils from './utils';
+export * as utils from "./utils";
 
 /**
  * Main class for handling blockchain image protocols
@@ -37,13 +37,13 @@ export class ImageProtocols {
     // Merge default handlers with custom handlers
     const defaultHandlers = createDefaultHandlers();
     this.handlers = { ...defaultHandlers };
-    
+
     // Override with custom handlers
-    Object.entries(this.config.handlers).forEach(([protocol, handler]) => {
+    for (const [protocol, handler] of Object.entries(this.config.handlers)) {
       if (handler) {
         this.handlers[protocol as Protocol] = handler;
       }
-    });
+    }
 
     this.cache = new Map();
   }
@@ -58,10 +58,7 @@ export class ImageProtocols {
   /**
    * Gets a display URL for an image
    */
-  async getDisplayUrl(
-    url: string,
-    options: DisplayOptions = {}
-  ): Promise<string> {
+  async getDisplayUrl(url: string, options: DisplayOptions = {}): Promise<string> {
     const { fallback = this.config.fallbackImage, timeout = DEFAULTS.timeout } = options;
 
     try {
@@ -73,7 +70,7 @@ export class ImageProtocols {
 
       // Parse the URL
       const parsed = this.parse(url);
-      
+
       if (!parsed.isValid) {
         console.warn(`Invalid image URL: ${url}`, parsed.error);
         return fallback;
@@ -109,16 +106,13 @@ export class ImageProtocols {
   /**
    * Batch process multiple URLs
    */
-  async getDisplayUrls(
-    urls: string[],
-    options: DisplayOptions = {}
-  ): Promise<Map<string, string>> {
+  async getDisplayUrls(urls: string[], options: DisplayOptions = {}): Promise<Map<string, string>> {
     const results = new Map<string, string>();
-    
+
     // Process in parallel with concurrency limit
     const concurrency = 10;
     const chunks = [];
-    
+
     for (let i = 0; i < urls.length; i += concurrency) {
       chunks.push(urls.slice(i, i + concurrency));
     }
@@ -128,7 +122,7 @@ export class ImageProtocols {
         const displayUrl = await this.getDisplayUrl(url, options);
         results.set(url, displayUrl);
       });
-      
+
       await Promise.all(promises);
     }
 
@@ -149,7 +143,10 @@ export class ImageProtocols {
   /**
    * Registers a custom handler for a protocol
    */
-  registerHandler(protocol: Protocol, handler: (parsed: ParsedImageURL) => Promise<string> | string): void {
+  registerHandler(
+    protocol: Protocol,
+    handler: (parsed: ParsedImageURL) => Promise<string> | string,
+  ): void {
     this.handlers[protocol] = handler;
   }
 
@@ -204,9 +201,7 @@ export class ImageProtocols {
 
     return Promise.race([
       promise,
-      new Promise<T>((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout')), timeoutMs)
-      ),
+      new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Timeout")), timeoutMs)),
     ]);
   }
 }
