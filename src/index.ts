@@ -1,6 +1,6 @@
-import { DEFAULTS } from "./constants";
-import { createDefaultHandlers } from "./handlers";
-import { parseImageURL } from "./parsers";
+import { DEFAULTS } from "./constants.js";
+import { createDefaultHandlers } from "./handlers.js";
+import { parseImageURL } from "./parsers.js";
 import {
   type DisplayOptions,
   type ImageProtocolConfig,
@@ -8,13 +8,13 @@ import {
   type ParsedImageURL,
   type Protocol,
   ProtocolHandlers,
-} from "./types";
-import * as validators from "./validators";
+} from "./types.js";
+import * as validators from "./validators.js";
 
-export * from "./types";
-export * from "./constants";
+export * from "./types.js";
+export * from "./constants.js";
 export { validators };
-export * as utils from "./utils";
+export * as utils from "./utils.js";
 
 /**
  * Main class for handling blockchain image protocols

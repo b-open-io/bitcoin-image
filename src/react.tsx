@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ImgHTMLAttributes } from "react";
-import { ImageProtocols } from "./index";
-import type { DisplayOptions, ParsedImageURL } from "./index";
+import { ImageProtocols } from "./index.js";
+import type { DisplayOptions, ParsedImageURL } from "./index.js";
 
 // Create a singleton instance for React apps
 let sharedInstance: ImageProtocols | null = null;

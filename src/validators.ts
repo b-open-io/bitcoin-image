@@ -1,4 +1,4 @@
-import { REGEX } from "./constants";
+import { REGEX } from "./constants.js";
 
 /**
  * Validates a Bitcoin transaction ID

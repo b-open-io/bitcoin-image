@@ -1,6 +1,6 @@
-import { DEFAULTS, DEFAULT_GATEWAYS } from "./constants";
-import type { ParsedImageURL, ProtocolHandler } from "./types";
-import { Protocol } from "./types";
+import { DEFAULTS, DEFAULT_GATEWAYS } from "./constants.js";
+import type { ParsedImageURL, ProtocolHandler } from "./types.js";
+import { Protocol } from "./types.js";
 
 /**
  * Default handler for Bitcoin Files Protocol (b://)

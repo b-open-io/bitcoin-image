@@ -1,12 +1,23 @@
 # Changelog
 
-## [0.0.1] - 2025-05-26
+## [0.0.2] - 2024-12-19
 
-- Support for Bitcoin Files (b://), Ordinals (ord://), BitFS (bitfs://), IPFS, and data URIs
-- React hooks and components with React 19 compatibility
-- Smart caching with configurable TTL
-- Custom protocol handler support
-- Comprehensive test suite & examples
-- User-friendly README with visual examples using OrdFS.network
-- Built with Bun's native bundler for faster builds
-- Strict Biome linting configuration
+### Fixed
+- Fixed React submodule exports not accessible in Next.js 15
+- Converted bundled ESM files to use proper `export` statements instead of `module.exports`
+- Added `.js` extensions to all internal imports for proper ESM compatibility
+- Updated build process to generate TypeScript-compiled ESM files instead of bundled files
+
+### Technical Details
+- The issue was caused by Bun's bundler generating `module.exports` patterns even for ESM format
+- Fixed by using TypeScript compiler for ESM generation and Bun bundler only for CommonJS
+- All React hooks (`useBlockchainImage`, `useBlockchainImages`, `useLazyBlockchainImage`) and components (`BlockchainImage`) now properly export as ESM
+
+## [0.0.1] - 2024-12-19
+
+### Added
+- Initial release of bitcoin-image library
+- Support for multiple blockchain image protocols (b://, ord://, bitfs://, ipfs://)
+- React hooks and components for blockchain image handling
+- TypeScript support with full type definitions
+- Caching and fallback mechanisms

@@ -1,11 +1,20 @@
 {
   "name": "bitcoin-image",
-  "version": "0.0.1",
-  "description": "Library for handling blockchain-based image protocols (b://, ord://, bitfs://, etc.)",
-  "type": "module",
+  "version": "0.0.2",
+  "author": "Satchmo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b-open-io/bitcoin-image.git"
+  },
   "main": "dist/index.cjs",
   "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "latest",
+    "@types/react": "^19.1.5",
+    "typescript": "^5.8.3"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -18,20 +27,12 @@
       "import": "./dist/react.js"
     }
   },
-  "files": ["dist", "src", "README.md"],
-  "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target node --format esm --minify --sourcemap --outfile index.js && bun build src/index.ts --outdir dist --target node --format cjs --minify --sourcemap --outfile index.cjs && bun build src/react.tsx --outdir dist --target node --format esm --minify --sourcemap --outfile react.js --external react && bun build src/react.tsx --outdir dist --target node --format cjs --minify --sourcemap --outfile react.cjs --external react && tsc --emitDeclarationOnly --outDir dist",
-    "dev": "bun build src/index.ts --outdir dist --target node --format esm --outfile index.js --watch",
-    "test": "bun test",
-    "test:real": "bun test tests/real-examples.test.ts",
-    "lint": "biome check .",
-    "lint:fix": "biome check --write .",
-    "type-check": "tsc --noEmit",
-    "example:node": "node examples/node-example.js",
-    "example:bun": "bun examples/node-example.js",
-    "example:cli": "node examples/cli.js",
-    "example:html": "cd examples && python3 -m http.server 8080"
+  "bugs": {
+    "url": "https://github.com/b-open-io/bitcoin-image/issues"
   },
+  "description": "Library for handling blockchain-based image protocols (b://, ord://, bitfs://, etc.)",
+  "files": ["dist", "src", "README.md"],
+  "homepage": "https://github.com/b-open-io/bitcoin-image#readme",
   "keywords": [
     "bitcoin",
     "bsv",
@@ -44,29 +45,25 @@
     "data-uri",
     "bitcoin-image"
   ],
-  "author": "Satchmo",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/b-open-io/bitcoin-image.git"
-  },
-  "bugs": {
-    "url": "https://github.com/b-open-io/bitcoin-image/issues"
-  },
-  "homepage": "https://github.com/b-open-io/bitcoin-image#readme",
-  "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/bun": "latest",
-    "@types/react": "^19.1.5",
-    "typescript": "^5.8.3"
-  },
-  "dependencies": {},
-  "peerDependencies": {
-    "react": ">=19.0.0"
-  },
   "peerDependenciesMeta": {
     "react": {
       "optional": true
     }
-  }
+  },
+  "scripts": {
+    "build": "bun build src/index.ts --outdir dist --target node --format cjs --minify --sourcemap --outfile index.cjs && bun build src/react.tsx --outdir dist --target node --format cjs --minify --sourcemap --outfile react.cjs --external react && tsc",
+    "dev": "bun build src/index.ts --outdir dist --target node --format esm --outfile index.js --watch",
+    "test": "bun test",
+    "test:real": "bun test tests/real-examples.test.ts",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "type-check": "tsc --noEmit",
+    "example:node": "node examples/node-example.js",
+    "example:bun": "bun examples/node-example.js",
+    "example:cli": "node examples/cli.js",
+    "example:html": "cd examples && python3 -m http.server 8080"
+  },
+  "type": "module",
+  "types": "dist/index.d.ts"
 }

@@ -9,12 +9,6 @@
         "@types/react": "^19.1.5",
         "typescript": "^5.8.3",
       },
-      "peerDependencies": {
-        "react": ">=19.0.0",
-      },
-      "optionalPeers": [
-        "react",
-      ],
     },
   },
   "packages": {

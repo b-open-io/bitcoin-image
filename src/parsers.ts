@@ -1,6 +1,6 @@
-import { PROTOCOL_PREFIXES, REGEX } from "./constants";
-import { type ParseOptions, type ParsedImageURL, Protocol } from "./types";
-import { isValidDataUri, isValidIPFSHash, isValidTxid, isValidVout } from "./validators";
+import { PROTOCOL_PREFIXES, REGEX } from "./constants.js";
+import { type ParseOptions, type ParsedImageURL, Protocol } from "./types.js";
+import { isValidDataUri, isValidIPFSHash, isValidTxid, isValidVout } from "./validators.js";
 
 /**
  * Parses a blockchain image URL into its components
