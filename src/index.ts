@@ -6,8 +6,8 @@ import {
   type ImageProtocolConfig,
   type ParseOptions,
   type ParsedImageURL,
-  type Protocol,
-  ProtocolHandlers,
+  Protocol,
+  type ProxyConfig,
 } from "./types.js";
 import * as validators from "./validators.js";
 
@@ -21,7 +21,7 @@ export * as utils from "./utils.js";
  */
 export class ImageProtocols {
   private handlers: Record<Protocol, (parsed: ParsedImageURL) => Promise<string> | string>;
-  private config: Required<ImageProtocolConfig>;
+  private config: Required<Omit<ImageProtocolConfig, "proxy">> & { proxy?: ProxyConfig };
   private cache: Map<string, { url: string; timestamp: number }>;
 
   constructor(config: ImageProtocolConfig = {}) {
@@ -32,6 +32,7 @@ export class ImageProtocols {
       validateTxid: config.validateTxid !== false,
       cacheEnabled: config.cacheEnabled !== false,
       cacheTTL: config.cacheTTL || DEFAULTS.cacheTTL,
+      proxy: config.proxy,
     };
 
     // Merge default handlers with custom handlers
@@ -90,6 +91,9 @@ export class ImageProtocols {
       } else {
         displayUrl = await handler(parsed);
       }
+
+      // Apply proxy if configured for this protocol
+      displayUrl = this.applyProxy(displayUrl, parsed.protocol);
 
       // Cache the result
       if (this.config.cacheEnabled) {
@@ -210,6 +214,32 @@ export class ImageProtocols {
       promise,
       new Promise<T>((_, reject) => setTimeout(() => reject(new Error("Timeout")), timeoutMs)),
     ]);
+  }
+
+  /**
+   * Applies proxy wrapping to a URL if configured
+   */
+  private applyProxy(url: string, protocol: Protocol): string {
+    const { proxy } = this.config;
+    if (!proxy) return url;
+
+    // Default to proxying HTTP only (external URLs)
+    const protocolsToProxy = proxy.protocols || [Protocol.HTTP];
+    if (!protocolsToProxy.includes(protocol)) return url;
+
+    // Don't proxy data URIs or relative paths
+    if (url.startsWith("data:") || (url.startsWith("/") && !url.startsWith("//"))) {
+      return url;
+    }
+
+    // Build proxy URL
+    const transforms = proxy.transforms || "";
+    const encodedUrl = encodeURIComponent(url);
+
+    if (transforms) {
+      return `${proxy.url}/${transforms}/${encodedUrl}`;
+    }
+    return `${proxy.url}/${encodedUrl}`;
   }
 }
 

@@ -46,6 +46,18 @@ export interface ProtocolHandlers {
 }
 
 /**
+ * Proxy configuration for external image URLs
+ */
+export interface ProxyConfig {
+  /** Base URL for the proxy endpoint (e.g. "/api/image/fetch") */
+  url: string;
+  /** Image transformation parameters (e.g. "w_256,h_256,c_fill,q_80") */
+  transforms?: string;
+  /** Which protocols to proxy. Defaults to [Protocol.HTTP] (external URLs only) */
+  protocols?: Protocol[];
+}
+
+/**
  * Library configuration options
  */
 export interface ImageProtocolConfig {
@@ -55,6 +67,8 @@ export interface ImageProtocolConfig {
   validateTxid?: boolean;
   cacheEnabled?: boolean;
   cacheTTL?: number;
+  /** Optional proxy configuration for routing images through an optimization proxy */
+  proxy?: ProxyConfig;
 }
 
 /**

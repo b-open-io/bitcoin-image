@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-image",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "Satchmo",
   "repository": {
     "type": "git",
@@ -12,8 +12,8 @@
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/bun": "latest",
-    "@types/react": "^19.1.5",
-    "typescript": "^5.8.3"
+    "@types/react": "^19.2.7",
+    "typescript": "^5.9.3"
   },
   "exports": {
     ".": {
